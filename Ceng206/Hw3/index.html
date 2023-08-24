@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color and Image Switcher</title>
+    <style>
+        .large-font {
+            font-size: 28px;
+        }
+        .image-container {
+            display: none;
+        }
+    </style>
+    <script>
+        let colors = [];
+        let currentImageIndex = 0;
+
+        function handleFileSelect(evt) {
+            const file = evt.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                colors = e.target.result.split(/\r?\n/).filter(color => color.trim());
+            };
+            reader.readAsText(file);
+        }
+
+        function changeColor() {
+            if (colors.length === 0) return;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            document.getElementById("text").style.color = color;
+        }
+
+        function changePicture() {
+            const images = document.getElementsByClassName("image-container");
+            images[currentImageIndex].style.display = "none";
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            images[currentImageIndex].style.display = "block";
+        }
+ww
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("file-input").addEventListener("change", handleFileSelect, false);
+        });
+    </script>
+</head>
+<body>
+    <div id="text" class="large-font">Gürkan AĞIR 20050111073 23 years old</div>
+    <input type="file" id="file-input" accept=".txt">
+    <button onclick="changeColor()">Change Color</button>
+    <br>
+    <img src="/image1.jpeg" class="image-container" style="display: block;">
+    <img src="/image2.jpeg" class="image-container">
+    <br>
+    <button onclick="changePicture()">Change Picture</button>
+</body>
+</html>
